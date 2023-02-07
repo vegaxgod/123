@@ -1629,9 +1629,3 @@ else if(preg_match_all("/^complete_office_deal$/ui", $_GET['type'])){
     );
     exit();
 }
-
-
-else{
-    echo("<img src='TOP.jpg'/>");
-    exit;
-}
