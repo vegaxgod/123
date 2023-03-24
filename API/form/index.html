@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>FORM</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <form action="form.php" method="post" enctype="multipart/form-data">
+            <label for="name">ФИО:</label>
+            <input type="text" name="FIO" id="name">
+
+            <br><br>
+
+            <label for="category">Категория:</label>
+            <select name="category" id="category">
+                <option value="" style="display: none;">Укажите категорию</option>
+                <option value="web">Веб-разработка</option>
+                <option value="design">Дизайн</option>
+                <option value="writing">Копирайтер</option>
+            </select>
+
+            <br><br>
+
+            <label for="file">Прикрепите файл:</label>
+            <input type="file" id="file" name="file" required>
+
+            <br><br>
+
+
+            <input type="submit" value="Отправить">
+            <input type="reset" value="Сбросить">
+        </form>
+    </body>
+</html>
