@@ -1629,3 +1629,43 @@ else if(preg_match_all("/^complete_office_deal$/ui", $_GET['type'])){
     );
     exit();
 }
+else if(preg_match_all("/^phonechange$/ui", $_GET['type'])){
+    if(!isset($_GET['phone'])){
+        echo ajax_echo (
+            "Ошибка!",
+            "Вы не указали GET параметр phone!",
+            "ERROR",
+            null
+        );
+        exit;
+    }
+    $arr = FormatNomera($_GET['phone']);
+    echo($arr);
+}
+
+else if(preg_match_all("/^mailencryption$/ui", $_GET['type'])){
+    if(!isset($_GET['mail'])){
+        echo ajax_echo (
+            "Ошибка!",
+            "Вы не указали GET параметр mail!",
+            "ERROR",
+            null
+        );
+        exit;
+    }
+    $arr = po4ta($_GET['mail']);
+    echo($arr);
+}
+else if(preg_match_all("/^ViborMaxMin$/ui", $_GET['type'])){
+    $arr = file(__DIR__."/../data.txt");
+    echo '<pre>';
+        print_r(ViborMaxMin($arr));
+        echo '</pre>';
+}
+
+else if(preg_match_all("/^ViborMinMax$/ui", $_GET['type'])){
+    $arr = file(__DIR__."/../data.txt");
+    echo '<pre>';
+        print_r(ViborMinMax($arr));
+        echo '</pre>';
+}
