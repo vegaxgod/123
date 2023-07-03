@@ -9,7 +9,11 @@ if(isset($_POST["date"]) && $_POST["date"] != "") $date = " AND `date` >= '".$_P
 if(isset($_POST["filter"])) $filter=$_POST["filter"];
 if(isset($_POST["orderby"])) $orderby=$_POST["orderby"];
 
-$query = "SELECT `id`,`task`,`completed`,`date` FROM `tasks` WHERE `deleted`=false AND userid=(SELECT `id` FROM `users_todo` WHERE `login`='".$_COOKIE["login"]."') ".$filter.$date." ".$orderby;
+$query = "SELECT `id` FROM `users_todo` WHERE `login`='".$_COOKIE["login"]."'";
+$res = mysqli_query($connection,$query);
+$id = mysqli_fetch_assoc($res)["id"];
+
+$query = "SELECT * FROM `tasks` WHERE `deleted`=false AND (userid=(SELECT `id` FROM `users_todo` WHERE `login`='".$_COOKIE["login"]."') OR `id` IN (SELECT `task_id` FROM todo_task_access WHERE `user_id`=(SELECT `id` FROM `users_todo` WHERE `login`='".$_COOKIE["login"]."'))) ".$filter.$date." ".$orderby;
     $res_query = mysqli_query($connection,$query);
 
     if(!$res_query){
@@ -26,11 +30,16 @@ $query = "SELECT `id`,`task`,`completed`,`date` FROM `tasks` WHERE `deleted`=fal
     $arr_res = array();
     $rows = mysqli_num_rows($res_query);
 
+
+    
     for ($i=0; $i < $rows; $i++){
         $row = mysqli_fetch_assoc($res_query);
         $checked = "";
         if($row["completed"] == "1") $checked = "checked";
-        echo "<li><input type='checkbox' ".$checked." disabled>".$row["task"]." <a href='remove_task.php?index=".$row["id"]."'>Remove</a><a href='edit_task.php?index=".$row["id"]."'>Edit</a>".$row["date"]."</li>";
+
+        if($row["userid"] != $id) echo "<li style='height: 40px;'><input type='checkbox' ".$checked." disabled>".$row["task"]."</li>";
+        else
+            echo "<li><input type='checkbox' ".$checked." disabled>".$row["task"]." <a href='remove_task.php?index=".$row["id"]."'>Удалить</a><a href='edit_task.php?index=".$row["id"]."'>Изменить</a>".$row["date"]."</li>";
     }
     exit;
 ?>
